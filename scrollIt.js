@@ -22,7 +22,8 @@
         scrollTime: 600,
         activeClass: 'active',
         onPageChange: null,
-        topOffset : 0
+        topOffset : 0,
+        topOffsetObject: null //takes jQuery object
     };
 
     $.scrollIt = function(options) {
@@ -38,6 +39,12 @@
          * METHODS
          */
 
+        var countOffset = function(){
+            if(settings.topOffsetObject !== null){
+                settings.topOffset = -settings.topOffsetObject.height();
+            }
+        };
+        countOffset();
         /**
          * navigate
          *
@@ -116,6 +123,10 @@
         /*
          * runs methods
          */
+        $(window).resize(function(){
+            countOffset();
+        });
+
         $(window).on('scroll',watchActive).scroll();
 
         $(window).on('keydown', keyNavigation);
