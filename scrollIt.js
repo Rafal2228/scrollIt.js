@@ -38,13 +38,6 @@
         /*
          * METHODS
          */
-
-        var countOffset = function(){
-            if(settings.topOffsetObject !== null){
-                settings.topOffset = -settings.topOffsetObject.height();
-            }
-        };
-        countOffset();
         /**
          * navigate
          *
@@ -53,7 +46,11 @@
         var navigate = function(ndx) {
             if(ndx < 0 || ndx > lastIndex) return;
 
-            var targetTop = $('[data-scroll-index=' + ndx + ']').offset().top + settings.topOffset + 1;
+            if((settings.topOffsetObject !== null)&&($(window).innerWidth() > 767)){
+                var targetTop = $('[data-scroll-index=' + ndx + ']').offset().top - settings.topOffsetObject.height() + 1;
+            } else {
+                var targetTop = $('[data-scroll-index=' + ndx + ']').offset().top + settings.topOffset + 1;
+            }
             $('html,body').animate({
                 scrollTop: targetTop,
                 easing: settings.easing
@@ -123,9 +120,6 @@
         /*
          * runs methods
          */
-        $(window).resize(function(){
-            countOffset();
-        });
 
         $(window).on('scroll',watchActive).scroll();
 
